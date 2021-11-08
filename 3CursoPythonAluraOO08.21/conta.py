@@ -5,6 +5,7 @@ class Conta:
         self.__titular = titular
         self.__saldo = saldo
         self.__limite = limite
+        self.__codigo_banco = "001"
 
     def extrato(self):
         print(f"Saldo de R${self.__saldo} do titular {self.__titular}")
@@ -12,8 +13,15 @@ class Conta:
     def deposita(self, valor):
         self.__saldo += valor
 
+    def __pode_sacar(self, valor_a_sacar):
+        valor_disponivel_saque = self.__saldo + self.__limite
+        return  valor_a_sacar <= valor_disponivel_saque
+
     def saca(self, valor):
-        self.__saldo -= valor
+        if self.__pode_sacar():
+            self.__saldo +=valor
+        else:
+            print(f'O valor {valor} passou o limite')
 
     def transfere(self, valor, destino):
         self.saca(valor)
@@ -30,3 +38,6 @@ class Conta:
 
     def set_limite(self, limite): # set altera um valor
         self.__limite = limite
+    @property
+    def codigo_banco(self):
+        return self.__codigo_banco
